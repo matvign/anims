@@ -1,0 +1,10 @@
+.base {
+    opacity: 1;
+    display: block;
+
+    transition: opacity 0.5s ease-in-out;
+}
+
+.base:hover {
+    opacity: 0;
+}

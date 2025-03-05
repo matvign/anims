@@ -1,0 +1,17 @@
+.default {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.faded {
+    visibility: hidden;
+    max-height: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0;
+}
