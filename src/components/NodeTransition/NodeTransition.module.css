@@ -1,8 +1,13 @@
 .default {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
-.fade-in {
+.enter {
     opacity: 1;
+}
+
+.leave {
+    opacity: 0;
+    color: red;
 }

@@ -3,13 +3,25 @@ import clsx from "clsx";
 
 import styles from "./NodeTransition.module.css";
 
+type AnimationState = "idle" | "enter" | "leave";
+
+/**
+ * Transitions can only run when changes are made to elements ALREADY existing
+ * in the DOM. Just making an element appear will not run the transition.
+ *
+ * To get around this, we split the render and the transition.
+ * Render first, then in an effect, apply the css class that will run a transition.
+ *
+ * When the leaving animation has finished, then we remove the node from the DOM
+ * @returns
+ */
 export const NodeTransition = () => {
-  const [visible, setVisible] = useState(0);
+  const [animate, setAnimate] = useState<AnimationState>("idle");
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
     if (shouldRender) {
-      setVisible(1);
+      setAnimate("enter");
     }
   }, [shouldRender]);
 
@@ -17,7 +29,7 @@ export const NodeTransition = () => {
     if (!shouldRender) {
       setShouldRender(true);
     } else {
-      setVisible(0);
+      setAnimate("leave");
     }
   };
 
@@ -27,10 +39,14 @@ export const NodeTransition = () => {
       {shouldRender && (
         <div
           onTransitionEnd={() => {
-            if (!visible) setShouldRender(false);
+            if (animate === "leave") {
+              setShouldRender(false);
+              setAnimate("idle");
+            }
           }}
           className={clsx(styles["default"], {
-            [styles["fade-in"]]: visible === 1,
+            [styles["enter"]]: animate === "enter",
+            [styles["leave"]]: animate === "leave",
           })}
         >
           Something here
